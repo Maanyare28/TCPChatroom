@@ -17,6 +17,7 @@ def load_users():
             for line in f:
                 if ':' in line:
                     u, p = line.strip().split(':', 1)
+                    u, p = u.strip(), p.strip()
                     users[u] = p
     return users
 
@@ -56,8 +57,8 @@ def handle_client(conn, addr, users_db):
             msg = json.loads(data.decode('utf-8'))
 
             if msg.get("command") == "login":
-                username = msg["username"]
-                password = msg["password"]
+                username = msg["username"].strip()
+                password = msg["password"].strip()
 
                 if username not in users_db:
                     users_db[username] = password
