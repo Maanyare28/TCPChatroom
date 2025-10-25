@@ -105,7 +105,7 @@ def handle_client(conn, addr, users_db):
                 # Invalid password check
                 elif users_db[username] != password:
                     conn.sendall(json.dumps(
-                        {"type": "error", "message": "Invalid password."}
+                        {"type": "error", "message": "Invalid password. Enter correct password or register by entering a new username and password."}
                     ).encode('utf-8'))
                     return
 
