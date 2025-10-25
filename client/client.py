@@ -100,17 +100,28 @@ def login(sock):
 
     sock.send(json.dumps({
         "command": "login",
-        "username": username,
-        "password": password
+        "username": username.strip(),
+        "password": password.strip()
     }).encode('utf-8'))
 
-    try:
-        response_data = sock.recv(4096).decode('utf-8')
-        response = json.loads(response_data)
-    except json.JSONDecodeError:
-        print("Invalid response from server.")
-        sock.close()
-        sys.exit(1)
+    buffer = ""
+    while True:
+        try:
+            data = sock.recv(4096)
+            if not data:
+                print("Connection closed by server.")
+                sys.exit(1)
+            buffer += data.decode('utf-8')
+
+            # Try to parse full JSON message
+            msg, idx = json.JSONDecoder().raw_decode(buffer)
+            buffer = buffer[idx:].lstrip()
+
+            response = msg
+            break
+        except json.JSONDecodeError:
+            # Incomplete JSON, keep waiting
+            continue
 
     if response.get("type") == "error":
         print(f"[Server]: {response.get('message')}")
