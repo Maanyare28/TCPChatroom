@@ -1,9 +1,0 @@
-monitorclient:monitorclient
-pcrightclient:pcrightclient
-pcleftclient:pcleftclient
-leftpcclient:leftpcclient
-rightpcclient:rightpcclient
-hi:hi
-he:he
-ho :ho
-hu:hu
